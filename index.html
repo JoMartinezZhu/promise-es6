@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyPromise</title>
+  </head>
+  <body>
+    <script src="./promise.js"></script>
+    <script>
+      new MyPromise((resolve, reject) => {
+        console.log("开始了");
+        resolve(1);
+      });
+    </script>
+  </body>
+</html>

@@ -1,17 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MyPromise</title>
-  </head>
-  <body>
-    <script src="./promise.js"></script>
-    <script>
-      new MyPromise((resolve, reject) => {
-        console.log("开始了");
-        resolve(1);
-      });
-    </script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>MyPromise</title>
+    </head>
+    <body>
+        <script src="./promise.js"></script>
+        <script>
+            /**
+             * MyPromise case
+             */
+
+            new MyPromise((resolve, reject) => {
+                // do something
+                console.log("开始执行 MyPromise 了");
+                resolve("MyPromise resolve");
+                // reject("MyPromise reject");
+            }).then(
+                value => {
+                    console.log(value);
+                },
+                reason => {
+                    console.log(reason);
+                }
+            );
+            console.log("=====1==end======");
+            // .catch(reason => {
+            //   console.log("MyPromise catch");
+            // });
+        </script>
+    </body>
 </html>

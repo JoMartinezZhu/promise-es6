@@ -15,14 +15,21 @@
             new MyPromise((resolve, reject) => {
                 // do something
                 console.log("开始执行 MyPromise 了");
+
                 resolve("MyPromise resolve");
+
                 // reject("MyPromise reject");
+
+                // setTimeout(function() {
+                //     resolve("MyPromise resolve");
+                //     reject("MyPromise reject");
+                // }, 1000);
             }).then(
                 value => {
                     console.log(value);
                 },
                 reason => {
-                    console.log(reason);
+                    console.log("reason", reason);
                 }
             );
             console.log("=====1==end======");

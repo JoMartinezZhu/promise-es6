@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Native Promise</title>
+    </head>
+    <body>
+        <script>
+            new Promise((resolve, reject) => {
+                // do something
+                console.log("开始执行 Promise 了");
+                resolve("Promise resolve");
+                // reject("Promise reject");
+            })
+                .then(
+                    value => {
+                        console.log(value);
+                    },
+                    reason => {
+                        console.log(reason);
+                    }
+                )
+                .catch(reason => {
+                    console.log("Promise catch");
+                });
+            console.log("=====1==end======");
+        </script>
+    </body>
+</html>

@@ -47,11 +47,21 @@ class MyPromise {
         if (this.state === MyPromise.PENDING) {
             this.callbacks.push({
                 onFulFilled: value => {
-                    onFulFilled(value);
+                    try {
+                        onFulFilled(this.value);
+                    } catch (error) {
+                        // TODO: 使用catch处理
+                        onRejected(error);
+                    }
                 },
                 onRejected: reason => {
                     // TODO: 使用catch处理
-                    onRejected(reason);
+                    try {
+                        onRejected(this.value);
+                    } catch (error) {
+                        // TODO: 使用catch处理
+                        onRejected(error);
+                    }
                 }
             });
         }
@@ -72,7 +82,6 @@ class MyPromise {
                 try {
                     onRejected(this.value);
                 } catch (error) {
-                    console.log(error);
                     // TODO: 使用catch处理
                     onRejected(error);
                 }

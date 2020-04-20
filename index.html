@@ -3,39 +3,30 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>MyPromise</title>
+        <title>MiniPromise</title>
     </head>
     <body>
-        <script src="./promise.js"></script>
+        <script src="./MiniPromise.js"></script>
         <script>
-            /**
-             * MyPromise case
-             */
-
-            new MyPromise((resolve, reject) => {
-                // do something
+            var p = new MiniPromise((resolve, reject) => {
                 console.log("开始执行 MyPromise 了");
+                setTimeout(() => {
+                    // resolve("MyPromise resolve");
+                    reject("rejected");
+                }, 0);
+                // reject("rejected");
+            });
 
-                resolve("MyPromise resolve");
-
-                // reject("MyPromise reject");
-
-                // setTimeout(function() {
-                //     resolve("MyPromise resolve");
-                //     reject("MyPromise reject");
-                // }, 1000);
-            }).then(
-                value => {
+            p.then(
+                (value) => {
                     console.log(value);
                 },
-                reason => {
+                (reason) => {
                     console.log("reason", reason);
                 }
             );
-            console.log("=====1==end======");
-            // .catch(reason => {
-            //   console.log("MyPromise catch");
-            // });
+
+            console.log("sync end");
         </script>
     </body>
 </html>

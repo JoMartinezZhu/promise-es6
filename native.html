@@ -7,24 +7,23 @@
     </head>
     <body>
         <script>
-            new Promise((resolve, reject) => {
-                // do something
-                console.log("开始执行 Promise 了");
-                resolve("Promise resolve");
-                // reject("Promise reject");
-            })
-                .then(
-                    value => {
-                        console.log(value);
-                    },
-                    reason => {
-                        console.log(reason);
-                    }
-                )
-                .catch(reason => {
-                    console.log("Promise catch");
+            var p = new Promise((resolve, reject) => {
+                console.log("开始执行 Native 了");
+                setTimeout(() => {
+                    resolve("Native resolve");
                 });
-            console.log("=====1==end======");
+            });
+
+            p.then(
+                (value) => {
+                    console.log(value);
+                },
+                (reason) => {
+                    console.log("reason", reason);
+                }
+            );
+
+            console.log("sync end");
         </script>
     </body>
 </html>

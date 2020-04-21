@@ -1,7 +1,7 @@
 class HD {
-    static PENDING = "pending";
-    static FULFILLED = "fulfilled";
-    static REJECTED = "rejected";
+    static PENDING = 'pending';
+    static FULFILLED = 'fulfilled';
+    static REJECTED = 'rejected';
     constructor(executor) {
         this.status = HD.PENDING;
         this.value = null;
@@ -17,7 +17,7 @@ class HD {
             this.status = HD.FULFILLED;
             this.value = value;
             setTimeout(() => {
-                this.callbacks.map((callback) => {
+                this.callbacks.map(callback => {
                     callback.onFulfilled(value);
                 });
             });
@@ -28,26 +28,26 @@ class HD {
             this.status = HD.REJECTED;
             this.value = reason;
             setTimeout(() => {
-                this.callbacks.map((callback) => {
+                this.callbacks.map(callback => {
                     callback.onRejected(reason);
                 });
             });
         }
     }
     then(onFulfilled, onRejected) {
-        if (typeof onFulfilled != "function") {
+        if (typeof onFulfilled != 'function') {
             onFulfilled = () => this.value;
         }
-        if (typeof onRejected != "function") {
+        if (typeof onRejected != 'function') {
             onRejected = () => this.value;
         }
         let promise = new HD((resolve, reject) => {
             if (this.status == HD.PENDING) {
                 this.callbacks.push({
-                    onFulfilled: (value) => {
+                    onFulfilled: value => {
                         this.parse(promise, onFulfilled(value), resolve, reject);
                     },
-                    onRejected: (value) => {
+                    onRejected: value => {
                         this.parse(promise, onRejected(value), resolve, reject);
                     },
                 });
@@ -67,7 +67,7 @@ class HD {
     }
     parse(promise, result, resolve, reject) {
         if (promise == result) {
-            throw new TypeError("Chaining cycle detected");
+            throw new TypeError('Chaining cycle detected');
         }
         try {
             if (result instanceof HD) {
@@ -96,15 +96,15 @@ class HD {
     static all(promises) {
         const values = [];
         return new HD((resolve, reject) => {
-            promises.forEach((promise) => {
+            promises.forEach(promise => {
                 promise.then(
-                    (value) => {
+                    value => {
                         values.push(value);
                         if (values.length == promises.length) {
                             resolve(values);
                         }
                     },
-                    (reason) => {
+                    reason => {
                         reject(reason);
                     }
                 );
@@ -113,12 +113,12 @@ class HD {
     }
     static race(promises) {
         return new HD((resolve, reject) => {
-            promises.map((promise) => {
+            promises.map(promise => {
                 promise.then(
-                    (value) => {
+                    value => {
                         resolve(value);
                     },
-                    (reason) => {
+                    reason => {
                         reject(reason);
                     }
                 );

@@ -17,7 +17,7 @@ class HD {
             this.status = HD.FULFILLED;
             this.value = value;
             setTimeout(() => {
-                this.callbacks.map(callback => {
+                this.callbacks.map((callback) => {
                     callback.onFulfilled(value);
                 });
             });
@@ -28,7 +28,7 @@ class HD {
             this.status = HD.REJECTED;
             this.value = reason;
             setTimeout(() => {
-                this.callbacks.map(callback => {
+                this.callbacks.map((callback) => {
                     callback.onRejected(reason);
                 });
             });
@@ -44,12 +44,12 @@ class HD {
         let promise = new HD((resolve, reject) => {
             if (this.status == HD.PENDING) {
                 this.callbacks.push({
-                    onFulfilled: value => {
+                    onFulfilled: (value) => {
                         this.parse(promise, onFulfilled(value), resolve, reject);
                     },
-                    onRejected: value => {
+                    onRejected: (value) => {
                         this.parse(promise, onRejected(value), resolve, reject);
-                    }
+                    },
                 });
             }
             if (this.status == HD.FULFILLED) {
@@ -96,15 +96,15 @@ class HD {
     static all(promises) {
         const values = [];
         return new HD((resolve, reject) => {
-            promises.forEach(promise => {
+            promises.forEach((promise) => {
                 promise.then(
-                    value => {
+                    (value) => {
                         values.push(value);
                         if (values.length == promises.length) {
                             resolve(values);
                         }
                     },
-                    reason => {
+                    (reason) => {
                         reject(reason);
                     }
                 );
@@ -113,12 +113,12 @@ class HD {
     }
     static race(promises) {
         return new HD((resolve, reject) => {
-            promises.map(promise => {
+            promises.map((promise) => {
                 promise.then(
-                    value => {
+                    (value) => {
                         resolve(value);
                     },
-                    reason => {
+                    (reason) => {
                         reject(reason);
                     }
                 );

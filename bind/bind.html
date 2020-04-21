@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>实现Bind</title>
+    </head>
+    <body>
+        <!-- <script src="./bind.js"></script> -->
+        <script>
+            Function.prototype.myApply = function (context, args) {
+                context = context || window;
+                args = args ? args : [];
+                let key = Symbol();
+                context[key] = this;
+                let result = context[key](...args);
+                delete context[key];
+                return result;
+            };
+
+            Function.prototype.myCall = function (context, ...args) {
+                context = context || window;
+                args = args ? args : [];
+
+                let key = Symbol();
+                context[key] = this;
+                let result = context[key](...args);
+                delete context[key];
+                return result;
+            };
+
+            Function.prototype.myBind = function (context, ...args) {
+                const fn = this;
+                args = args ? args : [];
+                return function newFn(...newFnArgs) {
+                    if (this instanceof newFn) {
+                        return new fn(...args, ...newFnArgs);
+                    }
+                    return fn.apply(context, [...args, ...newFnArgs]);
+                };
+            };
+
+            const obj1 = {
+                name: "joy",
+                getName() {
+                    console.log(this);
+                    console.log(this.name);
+                },
+            };
+
+            const obj2 = {
+                name: "sam",
+            };
+
+            // obj1.getName.call(obj2); //obj2 sam
+            // obj1.getName.apply(obj2); //obj2 sam
+
+            const fn = obj1.getName.myBind(obj2);
+            fn(); //obj2 sam
+        </script>
+    </body>
+</html>

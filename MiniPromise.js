@@ -37,30 +37,68 @@ class MiniPromise {
     };
 
     then(onFulfilled, onRejected) {
-        if (this.status === MiniPromise.FULFILLED) {
-            setTimeout(() => {
-                onFulfilled(this.value);
-            }, 0);
+        let promise = null;
+        promise = new MiniPromise((resolve, reject) => {
+            if (this.status === MiniPromise.PENDING) {
+                console.log(this);
+                this.onResolvedCallbacks.push(() => {
+                    this.parse(promise, onFulfilled(this.value), resolve, reject);
+                });
+
+                this.onRejectedCallbacks.push(() => {
+                    this.parse(promise, onRejected(this.value), resolve, reject);
+                });
+            }
+
+            if (this.status === MiniPromise.FULFILLED) {
+                console.log("promise fulfilled");
+            }
+            if (this.status === MiniPromise.REJECTED) {
+                console.log("promise reject");
+            }
+        });
+
+        return promise;
+    }
+
+    parse(promise, result, resolve, reject) {
+        if (promise == result) {
+            throw new TypeError("Chaining cycle detected");
         }
-
-        if (this.status === MiniPromise.REJECTED) {
-            setTimeout(() => {
-                onRejected(this.reason);
-            }, 0);
-        }
-
-        if (this.status === MiniPromise.PENDING) {
-            this.onResolvedCallbacks.push(() => {
-                setTimeout(() => {
-                    onFulfilled(this.value);
-                }, 0);
-            });
-
-            this.onRejectedCallbacks.push(() => {
-                setTimeout(() => {
-                    onRejected(this.reason);
-                }, 0);
-            });
+        try {
+            if (result instanceof MiniPromise) {
+                result.then(resolve, reject);
+            } else {
+                resolve(result);
+            }
+        } catch (error) {
+            reject(error);
         }
     }
 }
+
+// if (this.status === MiniPromise.FULFILLED) {
+//     setTimeout(() => {
+//         onFulfilled(this.value);
+//     }, 0);
+// }
+
+// if (this.status === MiniPromise.REJECTED) {
+//     setTimeout(() => {
+//         onRejected(this.reason);
+//     }, 0);
+// }
+
+// if (this.status === MiniPromise.PENDING) {
+//     this.onResolvedCallbacks.push(() => {
+//         setTimeout(() => {
+//             onFulfilled(this.value);
+//         }, 0);
+//     });
+
+//     this.onRejectedCallbacks.push(() => {
+//         setTimeout(() => {
+//             onRejected(this.reason);
+//         }, 0);
+//     });
+// }

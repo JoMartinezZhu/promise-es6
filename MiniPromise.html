@@ -8,11 +8,11 @@
 </head>
 
 <body>
-    <script src="./HD.js"></script>
+    <script src="./MiniPromise.js"></script>
     <script>
-        var p = new HD((resolve, reject) => {
-            console.log("开始执行 HD 了");
-            resolve(new HD((resolve) => {
+        var p = new MiniPromise((resolve, reject) => {
+            console.log("开始执行 MiniPromise 了");
+            resolve(new MiniPromise((resolve) => {
                 resolve(2);
             }));
         }).then(

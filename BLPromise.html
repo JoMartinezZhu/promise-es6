@@ -2,17 +2,17 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MiniPromise</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLPromise</title>
 </head>
 
 <body>
-    <script src="./HD.js"></script>
+    <script src="./BLPromise.js"></script>
     <script>
-        var p = new HD((resolve, reject) => {
-            console.log("开始执行 HD 了");
-            resolve(new HD((resolve) => {
+        var p = new BLPromise((resolve, reject) => {
+            console.log("开始执行 BLPromise 了");
+            resolve(new BLPromise((resolve) => {
                 resolve(2);
             }));
         }).then(

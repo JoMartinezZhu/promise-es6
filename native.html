@@ -1,29 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Native Promise</title>
-    </head>
-    <body>
-        <script>
-            var p = new Promise((resolve, reject) => {
-                console.log("开始执行 Native 了");
-                setTimeout(() => {
-                    resolve("Native resolve");
-                });
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Native Promise</title>
+</head>
+
+<body>
+    <script>
+        var p = new Promise((resolve, reject) => {
+            console.log("开始执行 Native 了");
+            setTimeout(() => {
+                resolve("Native resolve");
             });
+            throw new Error(123);
+        });
 
-            p.then(
-                (value) => {
-                    console.log(value);
-                },
-                (reason) => {
-                    console.log("reason", reason);
-                }
-            );
+        p.then(
+            (value) => {
+                console.log(value);
+            },
+            (reason) => {
+                console.log("reason", reason);
+                return "reason123"
+            }
+        ).then((res) => {
+            console.log("res: ", res);
+        })
 
-            console.log("sync end");
-        </script>
-    </body>
+        console.log("sync end");
+    </script>
+</body>
+
 </html>

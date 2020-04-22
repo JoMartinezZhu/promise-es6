@@ -34,29 +34,23 @@
                 args = args ? args : [];
                 return function newFn(...newFnArgs) {
                     if (this instanceof newFn) {
+                        console.log("this", this);
                         return new fn(...args, ...newFnArgs);
                     }
                     return fn.apply(context, [...args, ...newFnArgs]);
                 };
             };
 
-            const obj1 = {
-                name: "joy",
-                getName() {
-                    console.log(this);
-                    console.log(this.name);
-                },
-            };
+            function foo(c) {
+                this.b = 100;
+                console.log(this.a);
+                console.log(c);
+                return this.a;
+            }
 
-            const obj2 = {
-                name: "sam",
-            };
-
-            // obj1.getName.call(obj2); //obj2 sam
-            // obj1.getName.apply(obj2); //obj2 sam
-
-            const fn = obj1.getName.myBind(obj2);
-            fn(); //obj2 sam
+            var func = foo.bind({ a: 1 }, 20);
+            var za = new func();
+            console.log(za.b);
         </script>
     </body>
 </html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>自己实现Router</title>
+    </head>
+    <body>
+        <ul>
+            <li><a href="#/">turn yellow</a></li>
+            <li><a href="#/blue">turn blue</a></li>
+            <li><a href="#/green">turn green</a></li>
+        </ul>
+
+        <button id="back">go to back</button>
+
+        <script>
+            class Router {
+                constructor() {
+                    this.routes = {};
+                    this.currentUrl = "";
+                    this.refresh = this.refresh.bind(this);
+                    this.history = [];
+                    this.backOff = this.backOff.bind(this);
+                    this.currentIndex = this.history.length - 1;
+                    this.isBack = false;
+                    window.addEventListener("load", this.refresh, false);
+                    window.addEventListener("hashchange", this.refresh, false);
+                }
+
+                route(path, callback) {
+                    this.routes[path] = callback || function () {};
+                }
+
+                refresh() {
+                    this.currentUrl = location.hash.slice(1);
+
+                    if (!this.isBack) {
+                        this.history.push(this.currentUrl);
+                        this.currentIndex++;
+                    } else {
+                        this.isBack = false;
+                    }
+
+                    this.routes[this.currentUrl]();
+                }
+
+                backOff() {
+                    this.isBack = true;
+                    this.currentIndex = this.currentIndex <= 0 ? (this.currentIndex = 0) : (this.currentIndex = this.currentIndex - 1);
+                    location.hash = `#${this.history[this.currentIndex]}`;
+                }
+            }
+
+            window.router = new Router();
+
+            document.getElementById("back").addEventListener("click", function (e) {
+                router.backOff();
+            });
+            function changeColor(color) {
+                document.querySelector("body").style.backgroundColor = color;
+            }
+
+            router.route("/", function () {
+                changeColor("yellow");
+            });
+
+            router.route("/blue", function () {
+                changeColor("blue");
+            });
+
+            router.route("/green", function () {
+                changeColor("green");
+            });
+        </script>
+    </body>
+</html>
